@@ -435,17 +435,34 @@
             submitBtn.disabled = true;
 
             try {
-                const { data, error } = await supabaseClient
+                console.log('Attempting to send data to "fathima ahmed"...');
+                const { data, error, status, statusText } = await supabaseClient
                     .from('fathima ahmed')
                     .insert([{ name, email, message }]);
 
-                if (error) throw error;
+                if (error) {
+                    console.error('Supabase Error details:', {
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                        code: error.code,
+                        status: status,
+                        statusText: statusText
+                    });
+                    throw error;
+                }
 
                 alert('Message sent successfully!');
                 contactForm.reset();
             } catch (error) {
-                console.error('Detailed Error:', error);
-                alert('Error sending message: ' + (error.message || 'Unknown error') + '\nCheck console (F12) for details.');
+                console.error('Caught Error:', error);
+                let errorMsg = 'Error sending message:\n';
+                errorMsg += '• Message: ' + (error.message || 'Unknown error') + '\n';
+                if (error.code) errorMsg += '• Code: ' + error.code + '\n';
+                if (error.hint) errorMsg += '• Hint: ' + error.hint + '\n';
+                if (error.details) errorMsg += '• Details: ' + error.details + '\n';
+                errorMsg += '\nPlease check your Supabase Dashboard "Table Editor" and "Database/Policies" for table "fathima ahmed".';
+                alert(errorMsg);
             } finally {
                 submitBtn.textContent = 'Send Message';
                 submitBtn.disabled = false;
