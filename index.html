@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -428,6 +427,11 @@
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Protocol Check
+            if (window.location.protocol === 'file:') {
+                alert('Warning: You are running this file directly. Supabase may block requests from "file://" due to CORS. Please use a local server (like Live Server in VS Code) for best results.');
+            }
+
             const name = contactForm.querySelector('input[placeholder="Your Name"]').value;
             const email = contactForm.querySelector('input[placeholder="Your Email"]').value;
             const message = contactForm.querySelector('textarea').value;
@@ -461,8 +465,7 @@
                 errorMsg += '• Message: ' + (error.message || 'Unknown error') + '\n';
                 if (error.code) errorMsg += '• Code: ' + error.code + '\n';
                 if (error.hint) errorMsg += '• Hint: ' + error.hint + '\n';
-                if (error.details) errorMsg += '• Details: ' + error.details + '\n';
-                errorMsg += '\nPlease check your Supabase Dashboard "Table Editor" and "Database/Policies" for table "fathima ahmed".';
+                errorMsg += '\nIMPORTANT: Your table name must be EXACTLY "fathima ahmed" (with a space) or it will fail.';
                 alert(errorMsg);
             } finally {
                 submitBtn.textContent = 'Send Message';
@@ -474,4 +477,3 @@
 </body>
 
 </html>
-
