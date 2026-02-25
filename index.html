@@ -440,9 +440,9 @@
             submitBtn.disabled = true;
 
             try {
-                console.log('Attempting to send data to "fathima_ahmed"...');
+                console.log('Attempting to send data to table "backend"...');
                 const { data, error, status, statusText } = await supabaseClient
-                    .from('fathima_ahmed')
+                    .from('backend')
                     .insert([{ name, email, message }]);
 
                 if (error) {
@@ -477,4 +477,3 @@
 </body>
 
 </html>
-
