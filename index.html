@@ -402,74 +402,60 @@
         © 2026 Fathima Ahmed • Portfolio
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const reveals = document.querySelectorAll('.reveal');
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        window.addEventListener('scroll', () => {
-            const trigger = window.innerHeight * 0.85;
+<script>
+const supabaseUrl = 'https://xkwaymypjxcjstyqscfc.supabase.co';
+const supabaseKey = 'YOUR_ANON_KEY_HERE';
 
-            reveals.forEach(el => {
-                if (el.getBoundingClientRect().top < trigger) {
-                    el.classList.add('active');
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+const contactForm = document.querySelector('.contact-form');
+const submitBtn = contactForm.querySelector('button');
+
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = contactForm.querySelector('input[type="text"]').value;
+    const email = contactForm.querySelector('input[type="email"]').value;
+    const message = contactForm.querySelector('textarea').value;
+
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from('fathima_ahmed')
+            .insert([
+                {
+                    name: name,
+                    email: email,
+                    message: message
                 }
-            });
-        });
+            ]);
 
-        // Supabase Integration
-        const supabaseUrl = 'https://xkwaymypjxcjstyqscfc.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhrd2F5bXlwanhjanN0eXFzY2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTEwMzAsImV4cCI6MjA4NzQ4NzAzMH0.joGNtaBx84RrZGs3VyS07Msn2aiT4mQY7lCjlc6rtOY';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        if (error) {
+            console.error(error);
+            alert("Error: " + error.message);
+        } else {
+            alert("Message Sent Successfully!");
+            contactForm.reset();
+        }
 
-        const contactForm = document.querySelector('.contact-form');
-        const submitBtn = contactForm.querySelector('button');
+    } catch (err) {
+        console.error(err);
+        alert("Something went wrong!");
+    }
 
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = contactForm.querySelector('input[placeholder="Your Name"]').value;
-            const email = contactForm.querySelector('input[placeholder="Your Email"]').value;
-            const message = contactForm.querySelector('textarea').value;
-
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            try {
-                console.log('Attempting to send data to "fathima ahmed"...');
-                const { data, error, status, statusText } = await supabaseClient
-                    .from('fathima ahmed')
-                    .insert([{ name, email, message }]);
-
-                if (error) {
-                    console.error('Supabase Error details:', {
-                        message: error.message,
-                        details: error.details,
-                        hint: error.hint,
-                        code: error.code,
-                        status: status,
-                        statusText: statusText
-                    });
-                    throw error;
-                }
-
-                alert('Message sent successfully!');
-                contactForm.reset();
-            } catch (error) {
-                console.error('Caught Error:', error);
-                let errorMsg = 'Error sending message:\n';
-                errorMsg += '• Message: ' + (error.message || 'Unknown error') + '\n';
-                if (error.code) errorMsg += '• Code: ' + error.code + '\n';
-                if (error.hint) errorMsg += '• Hint: ' + error.hint + '\n';
-                if (error.details) errorMsg += '• Details: ' + error.details + '\n';
-                errorMsg += '\nPlease check your Supabase Dashboard "Table Editor" and "Database/Policies" for table "fathima ahmed".';
-                alert(errorMsg);
-            } finally {
-                submitBtn.textContent = 'Send Message';
-                submitBtn.disabled = false;
-            }
-        });
+    submitBtn.textContent = "Send Message";
+    submitBtn.disabled = false;
+});
+</script>
+   
     </script>
 
 </body>
 
 </html>
+
