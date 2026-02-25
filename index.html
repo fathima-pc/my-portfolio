@@ -465,7 +465,7 @@
                 errorMsg += '• Message: ' + (error.message || 'Unknown error') + '\n';
                 if (error.code) errorMsg += '• Code: ' + error.code + '\n';
                 if (error.hint) errorMsg += '• Hint: ' + error.hint + '\n';
-                errorMsg += '\nIMPORTANT: Your table name must be EXACTLY "fathima ahmed" (with a space) or it will fail.';
+                errorMsg += '\nIMPORTANT: Your table name must be EXACTLY "fathima_ahmed" (with an underscore) or it will fail.';
                 alert(errorMsg);
             } finally {
                 submitBtn.textContent = 'Send Message';
@@ -477,3 +477,4 @@
 </body>
 
 </html>
+
